@@ -27,19 +27,19 @@ Champion.init(
             allowNull: false
         },
         lore: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false
         },
         ally_tips: {
-            type: DataTypes.STRING,
+            type: DataTypes.JSON,
             allowNull: false
         },
         enemy_tips: {
-            type: DataTypes.STRING,
+            type: DataTypes.JSON,
             allowNull: false
         },
         type: {
-            type: DataTypes.STRING,
+            type: DataTypes.JSON,
             allowNull: false
         },
         difficulty: {

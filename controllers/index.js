@@ -3,5 +3,6 @@ module.exports = {
     championController: require('./championController'),
     abilityController: require('./abilityController'),
     archiveController: require('./archiveController'),
-    listController: require('./listController')
+    listController: require('./listController'),
+    initialController: require('./initialController')
 }

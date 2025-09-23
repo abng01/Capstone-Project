@@ -14,7 +14,7 @@ Archive.init(
             autoIncrement: true,
             primaryKey: true
         },
-        user: {
+        user_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {

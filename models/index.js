@@ -6,15 +6,19 @@ const Ability = require('./ability')
 const Archive = require('./archive')
 const List = require('./list')
 
+// User ↔ Archive
 User.hasMany(Archive, { foreignKey: "user_id", onDelete: "CASCADE" })
 Archive.belongsTo(User, { foreignKey: "user_id" })
 
+// Archive ↔ List
 Archive.hasMany(List, { foreignKey: "archive_id", onDelete: "CASCADE" })
 List.belongsTo(Archive, { foreignKey: "archive_id" })
 
-Archive.belongsToMany(Champion, { through: "Lists", foreignKey: "archive_id", otherKey: "champion_id" })
-Champion.belongsToMany(Archive, {  through: "Lists", foreignKey: "champion_id", otherKey: "archive_id" })
+// List ↔ Champion (many-to-many)
+List.belongsToMany(Champion, { through: "ListChampions", foreignKey: "list_id" })
+Champion.belongsToMany(List, { through: "ListChampions", foreignKey: "champion_id" })
 
+// Champion ↔ Ability
 Champion.hasMany(Ability, { foreignKey: "champion_id", onDelete: "CASCADE" })
 Ability.belongsTo(Champion, { foreignKey: "champion_id" })
 

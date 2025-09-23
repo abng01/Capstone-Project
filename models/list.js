@@ -8,6 +8,12 @@ class List extends Model {}
 
 List.init(
     {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true            
+        },
         archive_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -16,13 +22,9 @@ List.init(
                 key: 'id'
             }
         },
-        champion_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'champions',
-                key: 'id'
-            }
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         notes: {
             type: DataTypes.STRING,
