@@ -6,4 +6,6 @@ router.get("/", (req, res) => {
     Controllers.abilityController.getAbilities(res)
 })
 
+// Controllers.initialController.storeAbilities()
+
 module.exports = router

@@ -6,4 +6,6 @@ router.get("/", (req, res) => {
     Controllers.championController.getChampions(res)
 })
 
+// Controllers.initialController.storeChampions()
+
 module.exports = router
