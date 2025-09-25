@@ -4,5 +4,6 @@ module.exports = {
     abilityController: require('./abilityController'),
     archiveController: require('./archiveController'),
     listController: require('./listController'),
-    initialController: require('./initialController')
+    initialController: require('./initialController'),
+    authController: require('./authController')
 }
