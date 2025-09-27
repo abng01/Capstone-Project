@@ -18,4 +18,8 @@ router.delete("/:id", (req, res) => {
     Controllers.userController.deleteUser(req, res)
 })
 
+router.get("/:id/archive", (req, res) => {
+    Controllers.userController.getUserArchive(req, res)
+})
+
 module.exports = router

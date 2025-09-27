@@ -14,21 +14,17 @@ List.init(
             autoIncrement: true,
             primaryKey: true            
         },
-        archive_id: {
+        user_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'archives',
+                model: 'users',
                 key: 'id'
             }
         },
         name: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        notes: {
-            type: DataTypes.STRING,
-            allowNull: true
         }
     },
     {

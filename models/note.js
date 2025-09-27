@@ -4,35 +4,43 @@ let dbConnect = require("../dbConnect")
 
 const sequelizeInstance = dbConnect.Sequelize
 
-class Archive extends Model {}
+class Note extends Model {}
 
-Archive.init(
+Note.init(
     {
         id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             autoIncrement: true,
-            primaryKey: true
+            primaryKey: true            
         },
-        user_id: {
+        list_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'users',
+                model: 'lists',
                 key: 'id'
             }
         },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false
+        champion_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'champions',
+                key: 'id'
+            }
+        },
+        notes: {
+            type: DataTypes.TEXT,
+            allowNull: true
         }
     },
     {
         sequelize: sequelizeInstance,
-        modelName: "archives",
+        modelName: "notes",
         timestamps: true,
         freezeTableName: true
     }
 )
 
-module.exports = Archive
+module.exports = Note

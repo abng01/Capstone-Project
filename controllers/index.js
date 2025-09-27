@@ -2,8 +2,8 @@ module.exports = {
     userController: require('./userController'),
     championController: require('./championController'),
     abilityController: require('./abilityController'),
-    archiveController: require('./archiveController'),
     listController: require('./listController'),
     initialController: require('./initialController'),
-    authController: require('./authController')
+    authController: require('./authController'),
+    noteController: require('./noteController')
 }

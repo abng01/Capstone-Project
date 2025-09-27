@@ -3,31 +3,38 @@
 const User = require('./user')
 const Champion = require('./champion')
 const Ability = require('./ability')
-const Archive = require('./archive')
 const List = require('./list')
+const Note = require('./note')
+const { Sequelize } = require("../dbConnect")
 
-// User ↔ Archive
-User.hasMany(Archive, { foreignKey: "user_id", onDelete: "CASCADE" })
-Archive.belongsTo(User, { foreignKey: "user_id" })
+// User > Lists
+User.hasMany(List, { foreignKey: "user_id", onDelete: "CASCADE" })
+List.belongsTo(User, { foreignKey: "user_id" })
 
-// Archive ↔ List
-Archive.hasMany(List, { foreignKey: "archive_id", onDelete: "CASCADE" })
-List.belongsTo(Archive, { foreignKey: "archive_id" })
-
-// List ↔ Champion (many-to-many)
+// List > Champion (many-to-many)
 List.belongsToMany(Champion, { through: "ListChampions", foreignKey: "list_id" })
 Champion.belongsToMany(List, { through: "ListChampions", foreignKey: "champion_id" })
 
-// Champion ↔ Ability
+// Champion > Ability (one-to-many)
 Champion.hasMany(Ability, { foreignKey: "champion_id", onDelete: "CASCADE" })
 Ability.belongsTo(Champion, { foreignKey: "champion_id" })
 
+// List > Note (one-to-many)
+List.hasMany(Note, { foreignKey: "list_id", onDelete: "CASCADE" })
+Note.belongsTo(List, { foreignKey: "list_id" })
+
+// Champion > Note (one-to-many)
+Champion.hasMany(Note, { foreignKey: "champion_id", onDelete: "CASCADE" })
+Note.belongsTo(Champion, { foreignKey: "champion_id" })
+
 async function init() {
-    await User.sync(),
-    await Champion.sync(),
-    await Ability.sync(),
-    await Archive.sync(),
+    await User.sync()
+    await Champion.sync()
+    await Ability.sync()
     await List.sync()
+    await Note.sync()
+
+    await Sequelize.sync({ alter: true })
 }
 
 init()
@@ -36,6 +43,6 @@ module.exports = {
     User,
     Champion,
     Ability,
-    Archive,
-    List
+    List,
+    Note
 }

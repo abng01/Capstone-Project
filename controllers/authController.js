@@ -73,10 +73,31 @@ const login = async (req, res) => {
             return res.status(401).json({ message: "Incorrect password." })
         }
 
-        res.json({ message: "Login successful", user })
+        req.session.userId = user.id
+
+        req.session.save(err => {
+            if (err) console.log(err)
+            return res.json({ message: "Logged in successfully", userId: user.id })
+        })
     } catch (err) {
         res.status(500).json({ error: err.message })
     }
 }
 
-module.exports = { signup, login }
+// Logout function
+const logout = (req, res) => {
+    if (req.session) {
+        req.session.destroy(err => {
+            if (err) {
+                console.error(err)
+                return res.status(500).json({ result: 500, error: "Logout failed" })
+            }
+            res.clearCookie("connect.sid")
+            res.json({ result: 200, message: "Logout successful" })
+        })
+    } else {
+        res.status(400).json({ message: "No active session" })
+    }
+}
+
+module.exports = { signup, login, logout }

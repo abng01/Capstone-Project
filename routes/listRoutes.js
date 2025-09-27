@@ -2,9 +2,7 @@ const express = require("express")
 const router = express.Router()
 const Controllers = require("../controllers")
 
-router.get("/", (req, res) => {
-    Controllers.listController.getLists(res)
-})
+router.get("/", Controllers.listController.getLists)
 
 router.post("/create", (req, res) => {
     Controllers.listController.createList(req.body, res)
@@ -17,5 +15,14 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     Controllers.listController.deleteList(req, res)
 })
+
+router.post("/:id/champions", (req, res) => {
+    Controllers.listController.addChampionToList(req, res)
+})
+
+router.delete("/:listId/champions", (req, res) => {
+    Controllers.listController.removeChampionFromList(req, res)
+})
+
 
 module.exports = router
