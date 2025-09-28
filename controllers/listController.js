@@ -3,16 +3,16 @@
 const Models = require("../models")
 
 const getLists = async (req, res) => {
+    console.log("Session object:", req.session)
     try {
         const lists = await Models.List.findAll({
-            where: { user_id: req.session.userId },
+            where: { user_id: req.session.user_id },
             include: [Models.Champion]
         })
 
         res.json({ result: 200, data: lists })
     } catch (err) {
-        console.log("Session object:", req.session);
-        console.log("Session userId:", req.session.userId);
+        console.log("Session userId:", req.session.userId)
         res.status(500).json({ result: 500, error: err.message })
     }
 }
