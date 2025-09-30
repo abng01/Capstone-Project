@@ -1,6 +1,7 @@
 import { Card, CardContent, CardMedia, Typography, CardActions, Button, Grid, Box } from "@mui/material"
 import logo from "../assets/League of Legends Icon.png"
 import { NavLink } from "react-router-dom"
+import { buttonStyle } from "../themes/Theme"
 
 export const champions = [
     { id: 1, name: "Ahri", difficulty: 7 },
@@ -48,8 +49,8 @@ export default function BrowsePage() {
                         </Box>
                     </CardContent>
                     <CardActions sx={{ display: "flex", justifyContent: "center", gap: 2, pb: 3 }}>
-                        <Button component={NavLink} to={'/view/' + champion.id} sx={{ backgroundColor: "#B38A43", px: 4, color: "#FFF2B4", textTransform: "capitalize", fontWeight: "bold" }}>View</Button>
-                        <Button sx={{ backgroundColor: "#B38A43", px: 4, color: "#FFF2B4", textTransform: "capitalize", fontWeight: "bold" }}>Add</Button>
+                        <Button component={NavLink} to={'/view/' + champion.id} sx={buttonStyle}>View</Button>
+                        <Button sx={buttonStyle}>Add</Button>
                     </CardActions>
                     </Card>
                 </Grid>

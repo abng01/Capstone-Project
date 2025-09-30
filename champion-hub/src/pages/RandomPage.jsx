@@ -44,7 +44,6 @@ import FlareIcon from '@mui/icons-material/Flare'
 export default function ViewPage() {
     const params = useParams()
     const champId = params.id
-    console.log(champId)
     const champion = {
         name: "Ahri",
         title: "the Nine-Tailed Fox",

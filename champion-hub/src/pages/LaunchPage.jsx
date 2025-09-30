@@ -1,6 +1,7 @@
 import lolText from "../assets/9eb028de391e65072d06e77f06d0955f66b9fa2c-736x316.png"
 import { Box, Button, Grid } from "@mui/material"
 import { Navigate, useNavigate } from "react-router-dom"
+import { buttonStyle } from "../themes/Theme"
 
 export default function Launchpage({onEnter}) {
     const navigate = useNavigate()
@@ -25,11 +26,13 @@ export default function Launchpage({onEnter}) {
 
                 <Box>
                     <Box sx={{ display: "flex", gap: 4 }}>
-                        <Button onClick={handleBrowse} sx={{ backgroundColor: "#B38A43", px: 4, color: "#FFF2B4", textTransform: "capitalize", fontWeight: "bold", fontSize: "17px", py: 1.5, width: "300px", boxShadow: "0px 6px 14px #151412ff" }}>Browse Champions</Button>
-                        <Button onClick={handleLogin} sx={{ backgroundColor: "#B38A43", px: 4, color: "#FFF2B4", textTransform: "capitalize", fontWeight: "bold", fontSize: "17px", py: 1.5, width: "300px", boxShadow: "0px 6px 14px #151412ff" }}>Login</Button>
+                        <Button onClick={handleBrowse} sx={{...buttonStyle, fontSize: "17px", py: 1.5, width: "300px", boxShadow: "0px 6px 14px #151412ff"}}>Browse Champions</Button>
+                        <Button onClick={handleLogin} sx={{...buttonStyle, fontSize: "17px", py: 1.5, width: "300px", boxShadow: "0px 6px 14px #151412ff"}}>Login</Button>
                     </Box>
                 </Box>
             </Box>
         </>
     )
 }
+
+// {{ backgroundColor: "#B38A43", px: 4, color: "#FFF2B4", textTransform: "capitalize", fontWeight: "bold", fontSize: "17px", py: 1.5, width: "300px", boxShadow: "0px 6px 14px #151412ff" }

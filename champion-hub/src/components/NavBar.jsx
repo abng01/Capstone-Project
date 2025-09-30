@@ -1,22 +1,24 @@
-import { AppBar, Toolbar, Box, IconButton, Button, TextField } from "@mui/material"
+import { AppBar, Toolbar, Box, IconButton, Button, TextField, Menu, MenuItem } from "@mui/material"
 import { NavLink } from "react-router-dom"
 import PersonIcon from "@mui/icons-material/Person"
 import logo from "../assets/League of Legends Icon.png"
+import { activeButton, buttonStyle } from "../themes/Theme"
+import * as React from 'react'
 
 export default function NavBar() {
-  const activeButton = {
-    backgroundColor: "#9f8353ff",
-    color: "#ffebc886",
-    boxShadow: "inset 0px 4px 12px rgba(0,0,0,0.5)"
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const open = Boolean(anchorEl)
+  const [randomNum, setRandomNum] = React.useState(1)
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget)
   }
-  
-  const buttonStyle = {
-    backgroundColor: "#B38A43",
-    px: 4,
-    color: "#FFF2B4",
-    textTransform: "capitalize",
-    fontWeight: "bold"
+
+  const handleClose = () => {
+    setAnchorEl(null);
   }
+
+  const num = () => setRandomNum(Math.floor(Math.random() * 171 + 1))
 
   return (
     <AppBar position="fixed" sx={{ backgroundColor: "#1F2638", minHeight: "100px", justifyContent: "center"  }}>
@@ -33,7 +35,7 @@ export default function NavBar() {
           <Button component={NavLink} to="/browse" style={({ isActive }) => (isActive ? activeButton : undefined)} sx={buttonStyle}>
             Browse
           </Button>
-          <Button component={NavLink} to="/random" style={({ isActive }) => (isActive ? activeButton : undefined)} sx={buttonStyle}>
+          <Button component={NavLink} to={`/view/${randomNum}`} onClick={() => num()} style={({ isActive }) => (isActive ? activeButton : undefined)} sx={buttonStyle}>
             Random
           </Button>
         </Box>
@@ -57,9 +59,26 @@ export default function NavBar() {
           <Button component={NavLink} to="/archive" style={({ isActive }) => (isActive ? activeButton : undefined)} sx={buttonStyle}>
             Archive
           </Button>
-          <IconButton component={NavLink} to="/profile">
+
+          <IconButton onClick={handleClick}>
             <PersonIcon sx={{ fontSize: 40, color: "#d0c178ff" }} />
           </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
+            <MenuItem onClick={handleClose} component={NavLink} to="/profile">My account</MenuItem>
+            <MenuItem onClick={handleClose} component={NavLink} to="/profile">Logout</MenuItem>
+          </Menu>
         </Box>
       </Toolbar>
     </AppBar>
