@@ -7,6 +7,7 @@ import { textStyle, spanStyle } from "../themes/Theme"
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft'
 import { useNavigate } from "react-router-dom"
 import FlareIcon from '@mui/icons-material/Flare'
+import React from 'react'
 
     const abilities = [
     {
@@ -44,7 +45,7 @@ import FlareIcon from '@mui/icons-material/Flare'
 export default function ViewPage() {
     const params = useParams()
     const champId = params.id
-    console.log(champId)
+
     const champion = {
         name: "Ahri",
         title: "the Nine-Tailed Fox",
@@ -103,26 +104,26 @@ export default function ViewPage() {
                     </Box>
 
                     <Box>
-                        <Typography sx={textStyle}>
+                        <Typography component={Box} sx={textStyle}>
                             <span style={spanStyle}>Ally tips: </span>
-                            {champion.allyTips.map((tip) => (
-                                <>
+                            {champion.allyTips.map((tip, index) => (
+                                <React.Fragment key={index}>
                                     <List sx={{display: "flex", alignItems: "center"}}>
                                         <FlareIcon sx={{fontSize: 18, color: "#edd79cff"}}/>
                                         <ListItem>{tip}</ListItem>
                                     </List>
-                                </>
+                                </React.Fragment>
                             ))}
                         </Typography>
-                        <Typography sx={textStyle}>
+                        <Typography component={Box} sx={textStyle}>
                             <span style={spanStyle}>Enemy tips: </span>
-                            {champion.enemyTips.map((tip) => (
-                                <>
+                            {champion.enemyTips.map((tip, index) => (
+                                <React.Fragment key={index}>
                                     <List sx={{display: "flex", alignItems: "center"}}>
                                         <FlareIcon sx={{fontSize: 18, color: "#edd79cff"}}/>
                                         <ListItem>{tip}</ListItem>
                                     </List>
-                                </>
+                                </React.Fragment>
                             ))}
                         </Typography>                               
                     </Box>

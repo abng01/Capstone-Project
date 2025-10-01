@@ -4,9 +4,9 @@ import { Card, CardContent, Box, Container, Typography, IconButton, ListItem, Li
 import placeholder from "../assets/Placeholder_view_vector.svg.png"
 import Abilities from "../components/Abilities"
 import { textStyle, spanStyle } from "../themes/Theme"
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft'
 import { useNavigate } from "react-router-dom"
 import FlareIcon from '@mui/icons-material/Flare'
+import React from 'react'
 
     const abilities = [
     {
@@ -64,9 +64,6 @@ export default function ViewPage() {
 
     return(
         <Container maxWidth={false} sx={{ px: { xs: 2, sm: 4, md: 8, p: { xs: 2, md: 4 } }, pb: { xs: 4, sm: 6, md: 10 } }}>
-            <IconButton onClick={() => navigate(-1)}sx={{display: "flex", justifyContent: "flex-end", transition: "transform 0.2s ease-in-out", "&:hover": {transform: "scale(1.2)"}}}>
-                <KeyboardDoubleArrowLeftIcon sx={{fontSize: 50, color: "#D8BF78"}}/>
-            </IconButton>
             <Card sx={{ backgroundColor: "#3F4555", width: "100%", maxWidth: 1200, mx: "auto", mb: 10  }}>   
                     <CardContent sx={{ display: "flex", flexDirection: "column", gap: 1}}>
                     <Box sx={{ display: "flex", flexDirection: { xs: "column", lg: "row" }, gap: 3 }}>
@@ -102,26 +99,26 @@ export default function ViewPage() {
                     </Box>
 
                     <Box>
-                        <Typography sx={textStyle}>
+                        <Typography component={Box} sx={textStyle}>
                             <span style={spanStyle}>Ally tips: </span>
-                            {champion.allyTips.map((tip) => (
-                                <>
+                            {champion.allyTips.map((tip, index) => (
+                                <React.Fragment key={index}>
                                     <List sx={{display: "flex", alignItems: "center"}}>
                                         <FlareIcon sx={{fontSize: 18, color: "#edd79cff"}}/>
                                         <ListItem>{tip}</ListItem>
                                     </List>
-                                </>
+                                </React.Fragment>
                             ))}
                         </Typography>
-                        <Typography sx={textStyle}>
+                        <Typography component={Box} sx={textStyle}>
                             <span style={spanStyle}>Enemy tips: </span>
-                            {champion.enemyTips.map((tip) => (
-                                <>
+                            {champion.enemyTips.map((tip, index) => (
+                                <React.Fragment key={index}>
                                     <List sx={{display: "flex", alignItems: "center"}}>
                                         <FlareIcon sx={{fontSize: 18, color: "#edd79cff"}}/>
                                         <ListItem>{tip}</ListItem>
                                     </List>
-                                </>
+                                </React.Fragment>
                             ))}
                         </Typography>                               
                     </Box>

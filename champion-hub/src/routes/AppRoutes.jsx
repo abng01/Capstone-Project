@@ -1,14 +1,23 @@
 import { Routes, Route } from 'react-router-dom'
 import BrowsePage from '../pages/BrowsePage'
 import ViewPage from '../pages/ViewPage'
+import RandomPage from "../pages/RandomPage"
+import ArchivePage from '../pages/ArchivePage'
+import { useState } from 'react'
 
 export default function AppRoutes(props) {
+    const [randomNum, setRandomNum] = useState(1)
+
+    const num = () => setRandomNum(Math.floor(Math.random() * 171 + 1))
+
     return(
         <Routes>
             <Route path="/browse" element={<BrowsePage />} />
             <Route path="/view">
                 <Route path=":id" element={<ViewPage />} />
             </Route>
+            {/* <Route path="/random" element={<RandomPage />} /> */}
+            <Route path="/archive" element={<ArchivePage />} />
         </Routes>
     )
 }

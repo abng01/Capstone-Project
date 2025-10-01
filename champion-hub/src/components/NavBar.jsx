@@ -75,9 +75,10 @@ export default function NavBar() {
               vertical: "top",
               horizontal: "left",
             }}
+            disableScrollLock
           >
-            <MenuItem onClick={handleClose} component={NavLink} to="/profile">My account</MenuItem>
-            <MenuItem onClick={handleClose} component={NavLink} to="/profile">Logout</MenuItem>
+            <MenuItem onClick={handleClose} component={NavLink} to="/signup">Sign up</MenuItem>
+            <MenuItem onClick={handleClose} component={NavLink} to="/login">Login</MenuItem>
           </Menu>
         </Box>
       </Toolbar>
