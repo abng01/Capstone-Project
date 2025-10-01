@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect, createContext, useMemo } from 'react'
-import api from '../../library/api'
 
 const UserContext = createContext()
 
@@ -7,36 +6,30 @@ export const UserProvider = (props) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
 
+    // Checking if user is logged in via session storage
     useEffect(() => {
-        (async () => {
-            try {
-                const data = await api.get("/auth/me")
-                setUser(data?.user ?? null)
-            } catch {
-                setUser(null)
-            } finally {
-                setLoading(false)
-            }
-        })()
+        const storedUser = JSON.parse(sessionStorage.getItem("user"))
+        if (storedUser) setUser(storedUser)
+        setLoading(false)
     }, [])
 
-    const login = async (credentials) => {
+    // Login function
+    const login = async (username, password) => {
         try {
-            const { data } = await api.post("/auth/login", credentials);
-            setUser(data.user)
-            return data.user
+            const response = await axios.post("http://localhost:3000/auth/login", {username, password})
+            setUser(response.data.user)
+            sessionStorage.setItem("user", JSON.stringify(response.data.user))
+            return { success: true }
         } catch (err) {
-            throw err
+            console.error("Login error:", err)
+            return { success: false, message: "Login failed:" + err.response }
         }
     }
 
-    const logout = async () => {
-        try {
-            await api.post("/auth/logout")
-            setUser(null)
-        } catch (err) {
-            console.error("Logout failed", err)
-        }
+    // Logout Function
+    const logout = () => {
+        setUser(null)
+        sessionStorage.removeItem("user")
     }
 
     const value = useMemo(() => ({

@@ -30,3 +30,17 @@ export const buttonStyle = {
         transform: "scale(1.1)"
     }
 }
+
+export const inputFieldStyle = {
+    '& .MuiInputLabel-root': {
+      color: '#d7b478ff',
+    },
+    '& .MuiInputLabel-root.Mui-focused': {
+      color: '#ebdcc2ff',
+    },    
+    '& .MuiOutlinedInput-input': {
+      color: '#e7d0a8ff',
+    },
+    backgroundColor: "#e7d0a891",
+    input: {color: "#ffe6b7ff"}
+}

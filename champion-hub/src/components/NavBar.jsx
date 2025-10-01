@@ -4,11 +4,13 @@ import PersonIcon from "@mui/icons-material/Person"
 import logo from "../assets/League of Legends Icon.png"
 import { activeButton, buttonStyle } from "../themes/Theme"
 import * as React from 'react'
+import { useUser } from '../components/context/UserContext'
 
 export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const [randomNum, setRandomNum] = React.useState(1)
+  const { user, logout, isAuthenticated } = useUser()
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
@@ -25,7 +27,7 @@ export default function NavBar() {
       <Toolbar sx={{ display: "flex", justifyContent: "space-between"}}>
         {/* Left side */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <NavLink to="/">
+          <NavLink to="/dashboard">
             <img
               src={logo}
               alt="Logo"
@@ -77,8 +79,20 @@ export default function NavBar() {
             }}
             disableScrollLock
           >
-            <MenuItem onClick={handleClose} component={NavLink} to="/signup">Sign up</MenuItem>
-            <MenuItem onClick={handleClose} component={NavLink} to="/login">Login</MenuItem>
+            {!isAuthenticated ? (
+              [
+                <MenuItem onClick={handleClose} component={NavLink} to="/signup">Sign up</MenuItem>,
+                <MenuItem onClick={handleClose} component={NavLink} to="/login">Login</MenuItem>
+              ]
+            ) : (
+              [
+                <MenuItem onClick={handleClose} component={NavLink} to="/profile">My profile</MenuItem>,
+                <MenuItem onClick={() => {
+                  logout()
+                  handleClose()
+                  }}>Login</MenuItem>
+                ]
+            )}
           </Menu>
         </Box>
       </Toolbar>
