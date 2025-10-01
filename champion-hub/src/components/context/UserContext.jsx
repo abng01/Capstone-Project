@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, createContext, useMemo } from 'react'
+import React, { useState, useContext, useEffect, createContext, useMemo, useCallback } from 'react'
 import axios from 'axios'
 
 const UserContext = createContext()
@@ -6,6 +6,8 @@ const UserContext = createContext()
 export const UserProvider = (props) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
+
+    const API_URL = import.meta.env.VITE_API_URL
 
     // Checking if user is logged in via session storage
     useEffect(() => {
@@ -15,9 +17,9 @@ export const UserProvider = (props) => {
     }, [])
 
     // Login function
-    const login = async (username, password) => {
+    const login = useCallback(async (username, password) => {
         try {
-            const response = await axios.post("http://localhost:3000/auth/login", {username, password})
+            const response = await axios.post(`${API_URL}/auth/login`, {username, password}, {withCredentials: true})
             setUser(response.data.user)
             sessionStorage.setItem("user", JSON.stringify(response.data.user))
             return { success: true }
@@ -25,13 +27,13 @@ export const UserProvider = (props) => {
             console.error("Login error:", err)
             return { success: false, message: "Login failed:" + err.response }
         }
-    }
+    }, [API_URL])
 
     // Logout Function
-    const logout = () => {
+    const logout = useCallback(() => {
         setUser(null)
         sessionStorage.removeItem("user")
-    }
+    }, [])
 
     const value = useMemo(() => ({
         user, 
