@@ -16,7 +16,7 @@ let authRoutes = require('./routes/authRoutes')
 let noteRoutes = require('./routes/noteRoutes')
 
 app.use(session({
-  secret: "super-secret-key",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: { httpOnly: true, secure: false, sameSite: "lax" }
