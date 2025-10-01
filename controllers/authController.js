@@ -28,9 +28,15 @@ const signup = async (req, res) => {
         }
 
         // Check if email exists
-        const existingUser = await User.findOne({ where: { email } })
-        if (existingUser) {
+        const existingEmail = await User.findOne({ where: { email } })
+        if (existingEmail) {
             return res.status(400).json({ message: "This email is already in use" })
+        }
+
+        // Check if username exists
+        const existingUsername = await User.findOne({ where: { username }})
+        if (existingUsername) {
+            return res.status(400).json({ message: "This username is already in use" })
         }
 
         // Hash password
@@ -80,6 +86,8 @@ const login = async (req, res) => {
             if (err) console.log(err)
             return res.json({ message: "Logged in successfully", user_id: user.id })
         })
+
+        console.log("Session after login:", req.session)
     } catch (err) {
         res.status(500).json({ error: err.message })
     }

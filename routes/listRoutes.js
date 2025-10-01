@@ -4,9 +4,8 @@ const Controllers = require("../controllers")
 
 router.get("/", Controllers.listController.getLists)
 
-router.post("/create", (req, res) => {
-    Controllers.listController.createList(req.body, res)
-})
+router.post("/create", Controllers.listController.createList)
+
 
 router.put("/:id", (req, res) => {
     Controllers.listController.updateList(req, res)

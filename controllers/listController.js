@@ -3,16 +3,17 @@
 const Models = require("../models")
 
 const getLists = async (req, res) => {
-    console.log("Session object:", req.session)
     try {
+        if (!req.session.user_id) {
+            return res.status(401).json({ result: 401, error: "Please sign up or login to view lists." })
+        }
         const lists = await Models.List.findAll({
             where: { user_id: req.session.user_id },
-            include: [Models.Champion]
+            include: [Models.Champion, Models.Note]
         })
 
         res.json({ result: 200, data: lists })
     } catch (err) {
-        console.log("Session userId:", req.session.userId)
         res.status(500).json({ result: 500, error: err.message })
     }
 }
@@ -21,7 +22,7 @@ const createList = async (req, res) => {
     try {
         // Creating list based on logged in user
         const newList = await Models.List.create({
-            user_id: req.session.userId,
+            user_id: req.session.user_id,
             name: req.body.name
         })
         
@@ -39,7 +40,7 @@ const updateList = async (req, res) => {
         if (!list) return res.status(404).json({ message: "List not found" })
 
         // Check ownership
-        if (list.user_id !== userId) {
+        if (list.user_id !== req.session.user_id) {
             return res.status(403).json({ message: "Unauthorized: Cannot update this list" })
         }
 
@@ -59,7 +60,7 @@ const deleteList = async (req, res) => {
         if (!list) return res.status(404).json({ message: "List not found" })
 
         // Check ownership
-        if (list.user_id !== userId) {
+        if (list.user_id !== req.session.user_id) {
             return res.status(403).json({ message: "Unauthorized: Cannot delete this list" })
         }
 

@@ -13,16 +13,22 @@ const getUsers = (res) => {
         })
 }
 
-const createUser = (data, res) => {
-    Models.User.create(data)
-        .then((data) => {
-            res.send({ result: 200, data: data })
+const getUserById = (req, res) => {
+    const { id } = req.params
+
+    Models.User.findByPk(id)
+        .then((user) =>  {
+            if (!user) {
+                return res.status(400).json({ message: "User not found" })
+            }
+            res.send({ result: 200, data: user })
         })
         .catch((err) => {
             console.log(err)
             res.send({ result: 500, error: err.message })
         })
 }
+
 
 const updateUser = (req, res) => {
     Models.User.update(req.body, {
@@ -51,7 +57,7 @@ const deleteUser = (req, res) => {
 
 module.exports = {
     getUsers,
-    createUser,
+    getUserById,
     updateUser,
     deleteUser
 }

@@ -7,7 +7,7 @@ const getNotes = async (req, res) => {
         const notes = await Models.Note.findAll({
             include: [{
                 model: Models.List,
-                where: { user_id: userId }
+                where: { user_id: req.session.user_id }
             }]
         })
 
@@ -20,18 +20,18 @@ const getNotes = async (req, res) => {
 
 const createNote = async (req, res) => {
     try {
-        const { list_id, champion_id, note } = req.body
+        const { list_id, champion_id, notes } = req.body
 
         // Making sure list belongs to user
         const list = await Models.List.findByPk(list_id)
-        if (!list || list.user_id !== userId) {
+        if (!list || list.user_id !== req.session.user_id) {
             return res.status(403).json({ message: "Cannot add note to this list" })
         }
 
         const newNote = await Models.Note.create({
             list_id,
             champion_id,
-            note
+            notes
         })
 
         res.json({ result: 200, data: newNote })

@@ -6,7 +6,6 @@ router.get("/", Controllers.noteController.getNotes)
 
 router.post("/create", Controllers.noteController.createNote)
 
-
 router.put("/:id", (req, res) => {
     Controllers.noteController.updateNote(req, res)
 })
