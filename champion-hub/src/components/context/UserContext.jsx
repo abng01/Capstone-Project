@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, createContext, useMemo } from 'react'
 import api from '../../library/api'
 
 const UserContext = createContext()
 
-export const userProvider = (props) => {
+export const UserProvider = (props) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
 

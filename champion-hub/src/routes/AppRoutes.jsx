@@ -4,6 +4,7 @@ import ViewPage from '../pages/ViewPage'
 import RandomPage from "../pages/RandomPage"
 import ArchivePage from '../pages/ArchivePage'
 import { useState } from 'react'
+import LoginPage from '../pages/LoginPage'
 
 export default function AppRoutes(props) {
     const [randomNum, setRandomNum] = useState(1)
@@ -18,6 +19,7 @@ export default function AppRoutes(props) {
             </Route>
             {/* <Route path="/random" element={<RandomPage />} /> */}
             <Route path="/archive" element={<ArchivePage />} />
+            <Route path="/login" element={<LoginPage />} />
         </Routes>
     )
 }
