@@ -7,12 +7,12 @@ export default function Launchpage({onEnter}) {
     const navigate = useNavigate()
 
     const handleBrowse = () => {
-        onEnter()
+        onEnter(true)
         navigate("/browse")
     } 
 
     const handleLogin = () => {
-        onEnter()
+        onEnter(true)
         navigate("/login")
     } 
 

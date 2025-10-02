@@ -78,16 +78,12 @@ const login = async (req, res) => {
         if (!validPassword) {
             return res.status(401).json({ message: "Incorrect password." })
         }
-        console.log(req.session.user_id)
-        req.session.user_id = user.id
-        console.log(req.session.user_id)
 
         req.session.save(err => {
             if (err) console.log(err)
+            req.session.user_id = user.id
             return res.json({ message: "Logged in successfully", user_id: user.id })
         })
-
-        console.log("Session after login:", req.session)
     } catch (err) {
         res.status(500).json({ error: err.message })
     }

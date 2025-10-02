@@ -7,7 +7,7 @@ export default function Signup() {
     return (
         <>
             <Box sx={{ display: "flex", flexDirection: "column", width: "50%", margin: "auto", pt: 5}}>
-                <Box sx={{display: "flex"}}>
+                <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "flex-start"}}>
                     <Typography variant="h6" sx={{mb: 3, color: "white", }}>Already have an account?</Typography>
                     <Button component={NavLink} to="/login" sx={buttonStyle}>Login</Button>
                 </Box>
@@ -24,7 +24,7 @@ export default function Signup() {
                     <TextField label="Password" type="password" variant="filled" sx={{...inputFieldStyle, width: "45%"}} />
                 </Box>
             </Box>
-            <Button sx={{...buttonStyle, mt: 10}}>Sign up</Button>
+            <Button sx={{...buttonStyle, mt: 10, justifyContent: "space-between", alignItems: "flex-start"}}>Sign up</Button>
         </>
     )
 }

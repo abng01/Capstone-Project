@@ -2,10 +2,11 @@ const express = require("express")
 const router = express.Router()
 const Controllers = require("../controllers")
 
-router.get("/", Controllers.listController.getLists)
+router.get("/user", Controllers.listController.getLists)
 
 router.post("/create", Controllers.listController.createList)
 
+router.get('/:id', Controllers.listController.getListById)
 
 router.put("/:id", (req, res) => {
     Controllers.listController.updateList(req, res)

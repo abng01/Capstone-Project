@@ -2,29 +2,28 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import NavBar from './components/Navbar'
+import NavBar from './components/NavBar'
 import { CssBaseline } from '@mui/material'
 import Launchpage from './pages/LaunchPage'
 import AppRoutes from './routes/AppRoutes'
+import { useUser } from './components/context/UserContext'
 
 function App() {
-  const [isLaunched, setIsLaunched] = useState(false)
+  const { user, loading, isLaunched, setIsLaunched } = useUser()
 
-  const handleLaunch = () => {
-    setIsLaunched(true)
-  }
+  if (loading) return <p>Loading...</p>
 
   return (
     <>
       {isLaunched ? (
         <>
           <NavBar />
-          <div style={{ marginTop: "12em"}}>
+          <div style={{ marginTop: "12em" }}>
             <AppRoutes />
           </div>
         </>
       ) : (
-        <Launchpage onEnter={handleLaunch} />
+        <Launchpage onEnter={setIsLaunched} />
       )}
     </>
   )
