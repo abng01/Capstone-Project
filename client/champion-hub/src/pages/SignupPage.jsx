@@ -24,7 +24,7 @@ export default function Signup() {
                     <TextField label="Password" type="password" variant="filled" sx={{...inputFieldStyle, width: "45%"}} />
                 </Box>
             </Box>
-            <Button sx={{...buttonStyle, mt: 10}}>Sign up</Button>
+            <Button sx={{...buttonStyle, mt: 10, justifyContent: "space-between", alignItems: "flex-start"}}>Sign up</Button>
         </>
     )
 }
