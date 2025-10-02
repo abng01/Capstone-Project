@@ -141,3 +141,13 @@ export const removeChampFromList = async (listId, champId) => {
     throw err
   }
 }
+
+// signup function
+export const signupUser = async (formData) => {
+  try {
+    const response = await axios.post(minus + `/signup`, formData, { withCredentials: true })
+    return response.data
+  } catch (err) {
+    throw err
+  }
+}
