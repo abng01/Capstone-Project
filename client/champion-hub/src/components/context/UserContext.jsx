@@ -1,54 +1,88 @@
-import React, { useState, useContext, useEffect, createContext, useMemo, useCallback } from 'react'
+// UserContext.jsx
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react'
 import axios from 'axios'
+import { getUser } from '../../api'
+import {useCookies} from 'react-cookie'
 
 const UserContext = createContext()
 
-export const UserProvider = (props) => {
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
+const minus = "http://localhost:3000/auth"
 
-    const API_URL = import.meta.env.VITE_API_URL
+export const UserProvider = ({ children }) => {
+  // Using the react-cookie hook to manage the user cookie
+  const [cookies, setCookie, removeCookie] = useCookies(['user'])
+  const [user, setUser] = useState(cookies.userObject ? cookies.userObject : {})
+  const [loading, setLoading] = useState(true)
+  const [isLaunched, setIsLaunched] = useState(false)
+  let signedIn = false
 
-    // Checking if user is logged in via session storage
-    useEffect(() => {
-        const storedUser = JSON.parse(sessionStorage.getItem("user"))
-        if (storedUser) setUser(storedUser)
-        setLoading(false)
-    }, [])
+  // Function to handle user object and set cookie
+  const handleUser = (user) => {
+      console.log(user)
+      if (user.id) {
+        // Setting user cookie for 24 hours
+        setCookie('userObject', JSON.stringify(user.user), { path: '/', maxAge: 60 * 60 * 24 * 28 }) 
+      } else {
+        // If user does not have an id, remove user cookie
+        removeCookie('userObject')
+      }
+  }
 
-    // Login function
-    const login = useCallback(async (username, password) => {
-        try {
-            const response = await axios.post(`${API_URL}/auth/login`, {username, password}, {withCredentials: true})
-            setUser(response.data.user)
-            sessionStorage.setItem("user", JSON.stringify(response.data.user))
-            return { success: true }
-        } catch (err) {
-            console.error("Login error:", err)
-            return { success: false, message: "Login failed:" + err.response }
-        }
-    }, [API_URL])
+  // Login function
+  const login = useCallback(async (username, password) => {
+    try {
+      const response = await axios.post(minus + '/login', { username, password }, { withCredentials: true })
+      console.log(response.data)
+      if (response.data.user_id) {
+        // fetch full user info after login
+        const fullUser = await getUser(response.data.user_id)
+        console.log(fullUser.data.id)
+        setUser(fullUser.data)
+        sessionStorage.setItem('user', JSON.stringify(fullUser.data))
+        setIsLaunched(true)
+        signedIn = true
+        // handleUser(fullUser)
+        return { success: true }
+      }
 
-    // Logout Function
-    const logout = useCallback(() => {
-        setUser(null)
-        sessionStorage.removeItem("user")
-    }, [])
+      return { success: false, message: 'Login failed' }
+    } catch (err) {
+      console.error('Login error:', err)
+      const message = err.response?.data?.message || 'Server error'
+      return { success: false, message }
+    }
+  }, [])
 
-    const value = useMemo(() => ({
-        user, 
-        setUser, 
-        isAuthenticated: !!user, 
-        loading, 
-        login, 
-        logout,
-    }), [user, loading, login, logout])
+  // Logout function
+  const logout = useCallback(() => {
+    setUser(null)
+    sessionStorage.removeItem('user')
+    setIsLaunched(false)
+    signedIn = false
+  }, [])
 
-    return (
-        <UserContext.Provider value={value}>
-            {props.children}
-        </UserContext.Provider>
-    )
+  // On mount, restore session
+  useEffect(() => {
+    const storedUser = JSON.parse(sessionStorage.getItem('user'))
+    if (!signedIn) {
+      console.log("do nothing")
+    } else if (storedUser) {
+      setUser(storedUser)
+    }
+    setLoading(false)
+  }, [])
+
+  const value = useMemo(() => ({
+    user,
+    isAuthenticated: !!user,
+    loading,
+    login,
+    logout,
+    isLaunched,
+    setIsLaunched
+  }), [user, loading, login, logout, isLaunched, setIsLaunched])
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
 
 export const useUser = () => useContext(UserContext)

@@ -4,11 +4,11 @@ const Models = require("../models")
 
 const getLists = async (req, res) => {
     try {
-        if (!req.session.user_id) {
+        if (!req.query.user_id) {
             return res.status(401).json({ result: 401, error: "Please sign up or login to view lists." })
         }
         const lists = await Models.List.findAll({
-            where: { user_id: req.session.user_id },
+            where: { user_id: req.query.user_id },
             include: [Models.Champion, Models.Note]
         })
 
@@ -18,11 +18,32 @@ const getLists = async (req, res) => {
     }
 }
 
+const getListById = async (req, res) => {
+    try {
+        if (!req.session.user_id) {
+            return res.status(401).json({ result: 401, error: "Please login to view lists." })
+        }
+
+        const list = await Models.List.findOne({
+            where: { id: req.params.id, user_id: req.session.user_id },
+            include: [Models.Champion, Models.Note]
+        })
+
+        if (!list) {
+            return res.status(404).json({ result: 404, error: "List not found." })
+        }
+
+        res.json({ result: 200, data: list })
+    } catch (err) {
+        res.status(500).json({ result: 500, error: err.message })
+    }
+}
+
 const createList = async (req, res) => {
     try {
         // Creating list based on logged in user
         const newList = await Models.List.create({
-            user_id: req.session.user_id,
+            user_id: req.body.userId,
             name: req.body.name
         })
         
@@ -83,6 +104,11 @@ const addChampionToList = async (req, res) => {
         const list = await Models.List.findByPk(listId)
         if (!list) return res.status(404).json({ result: 404, message: "List not found" })
 
+        const existingChampions = await list.getChampions({ where: { id: champion_id } })
+        if (existingChampions.length > 0) {
+            return res.status(400).json({ result: 400, message: "Champion already exists in the list" })
+        }
+
         // Add champion using Sequelize many-to-many helper
         await list.addChampion(champion_id)
 
@@ -112,6 +138,7 @@ const removeChampionFromList = async (req, res) => {
 
 module.exports = {
     getLists,
+    getListById,
     createList,
     updateList,
     deleteList,
